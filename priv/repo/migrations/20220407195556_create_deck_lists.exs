@@ -7,7 +7,7 @@ defmodule Bauble.Repo.Migrations.CreateDeckLists do
       add :version, :string, null: false
       add :list, :text, null: false
       add :user_id, references(:users, on_delete: :nothing), null: false
-      add :metadata, :jsonb, default: {}, null: false
+      add :metadata, {:array, :map}, default: [], null: false
 
       timestamps()
     end

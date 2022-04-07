@@ -1,8 +1,8 @@
-defmodule Bauble.Repo.Migrations.CreateDeckType do
+defmodule Bauble.Repo.Migrations.CreateDeckTypes do
   use Ecto.Migration
 
   def change do
-    create table(:deck_type) do
+    create table(:deck_types) do
       add :name, :string
 
       timestamps()

@@ -13,7 +13,7 @@ defmodule Bauble.Repo.Migrations.CreateMatches do
       add :player_id, references(:users, on_delete: :nothing), null: false
       add :deck_list_id, references(:deck_lists, on_delete: :nothing), null: false
       add :opponent_deck_type, references(:deck_types, on_delete: :nothing), null: false
-      add :games, :jsonb, default: {}
+      add :games, {:array, :map}, default: [], null: false
 
       timestamps()
     end
