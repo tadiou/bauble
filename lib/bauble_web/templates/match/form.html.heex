@@ -1,0 +1,35 @@
+<.form let={f} for={@changeset} action={@action}>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <%= label f, :date %>
+  <%= date_select f, :date %>
+  <%= error_tag f, :date %>
+
+  <%= label f, :round %>
+  <%= number_input f, :round %>
+  <%= error_tag f, :round %>
+
+  <%= label f, :die_roll %>
+  <%= checkbox f, :die_roll %>
+  <%= error_tag f, :die_roll %>
+
+  <%= label f, :type %>
+  <%= select f, :type, Ecto.Enum.values(Bauble.Matchs.Match, :type), prompt: "Choose a value" %>
+  <%= error_tag f, :type %>
+
+  <%= label f, :event %>
+  <%= select f, :event, Ecto.Enum.values(Bauble.Matchs.Match, :event), prompt: "Choose a value" %>
+  <%= error_tag f, :event %>
+
+  <%= label f, :formats %>
+  <%= select f, :formats, Ecto.Enum.values(Bauble.Matchs.Match, :formats), prompt: "Choose a value" %>
+  <%= error_tag f, :formats %>
+
+  <div>
+    <%= submit "Save" %>
+  </div>
+</.form>

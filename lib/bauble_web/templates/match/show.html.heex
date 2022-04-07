@@ -1,0 +1,38 @@
+<h1>Show Match</h1>
+
+<ul>
+
+  <li>
+    <strong>Date:</strong>
+    <%= @match.date %>
+  </li>
+
+  <li>
+    <strong>Round:</strong>
+    <%= @match.round %>
+  </li>
+
+  <li>
+    <strong>Die roll:</strong>
+    <%= @match.die_roll %>
+  </li>
+
+  <li>
+    <strong>Type:</strong>
+    <%= @match.type %>
+  </li>
+
+  <li>
+    <strong>Event:</strong>
+    <%= @match.event %>
+  </li>
+
+  <li>
+    <strong>Formats:</strong>
+    <%= @match.formats %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.match_path(@conn, :edit, @match) %></span> |
+<span><%= link "Back", to: Routes.match_path(@conn, :index) %></span>

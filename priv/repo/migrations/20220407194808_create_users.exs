@@ -11,5 +11,8 @@ defmodule Bauble.Repo.Migrations.CreateUsers do
 
       timestamps()
     end
+
+    create unique_index(:users, :mtgo_handle)
+    create unique_index(:users, :mtga_handle)
   end
 end

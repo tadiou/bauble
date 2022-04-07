@@ -1,0 +1,36 @@
+<h1>Listing Matches</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Round</th>
+      <th>Die roll</th>
+      <th>Type</th>
+      <th>Event</th>
+      <th>Formats</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for match <- @matches do %>
+    <tr>
+      <td><%= match.date %></td>
+      <td><%= match.round %></td>
+      <td><%= match.die_roll %></td>
+      <td><%= match.type %></td>
+      <td><%= match.event %></td>
+      <td><%= match.formats %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.match_path(@conn, :show, match) %></span>
+        <span><%= link "Edit", to: Routes.match_path(@conn, :edit, match) %></span>
+        <span><%= link "Delete", to: Routes.match_path(@conn, :delete, match), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Match", to: Routes.match_path(@conn, :new) %></span>

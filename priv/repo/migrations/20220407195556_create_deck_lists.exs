@@ -3,10 +3,11 @@ defmodule Bauble.Repo.Migrations.CreateDeckLists do
 
   def change do
     create table(:deck_lists) do
-      add :name, :string
-      add :version, :string
-      add :list, :text
-      add :user_id, references(:users, on_delete: :nothing)
+      add :name, :string, null: false
+      add :version, :string, null: false
+      add :list, :text, null: false
+      add :user_id, references(:users, on_delete: :nothing), null: false
+      add :metadata, :jsonb, default: {}, null: false
 
       timestamps()
     end
