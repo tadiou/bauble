@@ -26,12 +26,20 @@ midgar-*.tar
 npm-debug.log
 
 # The directory NPM downloads your dependencies sources to.
+/node_modules
 /assets/node_modules/
 
 # Since we are building assets from assets/,
 # we ignore priv/static. You may want to comment
 # this depending on your deployment strategy.
 /priv/static/
+
+/installer/_build
+/installer/tmp
+/installer/doc
+/installer/deps
+
+/tmp
 
 # Mac Finder Files
 .DS_Store
