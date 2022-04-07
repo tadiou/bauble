@@ -1,0 +1,13 @@
+<h1>Show Deck type</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @deck_type.name %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.deck_type_path(@conn, :edit, @deck_type) %></span> |
+<span><%= link "Back", to: Routes.deck_type_path(@conn, :index) %></span>

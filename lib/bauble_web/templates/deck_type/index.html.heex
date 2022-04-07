@@ -1,0 +1,26 @@
+<h1>Listing Deck type</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for deck_type <- @deck_type do %>
+    <tr>
+      <td><%= deck_type.name %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.deck_type_path(@conn, :show, deck_type) %></span>
+        <span><%= link "Edit", to: Routes.deck_type_path(@conn, :edit, deck_type) %></span>
+        <span><%= link "Delete", to: Routes.deck_type_path(@conn, :delete, deck_type), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Deck type", to: Routes.deck_type_path(@conn, :new) %></span>

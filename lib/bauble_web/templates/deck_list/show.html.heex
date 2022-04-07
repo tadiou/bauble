@@ -1,0 +1,23 @@
+<h1>Show Deck list</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @deck_list.name %>
+  </li>
+
+  <li>
+    <strong>Version:</strong>
+    <%= @deck_list.version %>
+  </li>
+
+  <li>
+    <strong>List:</strong>
+    <%= @deck_list.list %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.deck_list_path(@conn, :edit, @deck_list) %></span> |
+<span><%= link "Back", to: Routes.deck_list_path(@conn, :index) %></span>

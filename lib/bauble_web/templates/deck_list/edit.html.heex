@@ -1,0 +1,5 @@
+<h1>Edit Deck list</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.deck_list_path(@conn, :update, @deck_list)) %>
+
+<span><%= link "Back", to: Routes.deck_list_path(@conn, :index) %></span>
