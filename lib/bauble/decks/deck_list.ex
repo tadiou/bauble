@@ -1,5 +1,5 @@
 defmodule Bauble.Decks.DeckList do
-  use Ecto.Schema
+  use Bauble.Schema
   import Ecto.Changeset
 
   schema "deck_lists" do

@@ -1,14 +1,36 @@
 defmodule Bauble.Accounts.User do
-  use Ecto.Schema
+  use Bauble.Schema
   import Ecto.Changeset
 
   schema "users" do
+    field :name, :string
+    field :location, :string
+    field :active, :boolean, default: false, null: false
+    field :mtgo_handle, :string
+    field :mtga_handle, :string
     field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
 
     timestamps()
+  end
+
+  def changeset(user, attrs) do
+    fields = [
+      :name,
+      :location,
+      :active,
+      :mtgo_handle,
+      :mtga_handle,
+      :email,
+      :password,
+      :hashed_password
+    ]
+
+    user
+    |> cast(attrs, fields)
+    |> validate_required(fields)
   end
 
   @doc """

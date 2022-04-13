@@ -18,7 +18,7 @@ config :bauble, BaubleWeb.Endpoint,
   live_view: [signing_salt: "AHfOwMWq"]
 
 # Configure repo
-config :bauble, Midgar.Repo,
+config :bauble, Bauble.Repo,
   migration_timestamps: [type: :utc_datetime_usec],
   migration_primary_key: [name: :id, type: :uuid, type: :binary_id],
   migration_foreign_key: [type: :binary_id],

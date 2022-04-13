@@ -1,5 +1,5 @@
 defmodule Bauble.Accounts.UserToken do
-  use Ecto.Schema
+  use Bauble.Schema
   import Ecto.Query
 
   @hash_algorithm :sha256
