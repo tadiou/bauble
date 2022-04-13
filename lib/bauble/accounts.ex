@@ -38,7 +38,7 @@ defmodule Bauble.Accounts do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
-  Creates a user.
+  Creates a user WITHOUT registering them. Use `register_user` in most scenarios
 
   ## Examples
 

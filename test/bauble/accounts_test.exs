@@ -21,14 +21,14 @@ defmodule Bauble.AccountsTest do
     end
 
     test "create_user/1 with valid data creates a user" do
-      valid_attrs = %{active: true, location: "some location", mtga_handle: "some mtga_handle", mtgo_handle: "some mtgo_handle", name: "some name"}
+      valid_attrs = valid_attributes()
 
       assert {:ok, %User{} = user} = Accounts.create_user(valid_attrs)
-      assert user.active == true
-      assert user.location == "some location"
-      assert user.mtga_handle == "some mtga_handle"
-      assert user.mtgo_handle == "some mtgo_handle"
-      assert user.name == "some name"
+      assert user.active == valid_attrs.active
+      assert user.location == valid_attrs.location
+      assert user.mtga_handle == valid_attrs.mtga_handle
+      assert user.mtgo_handle == valid_attrs.mtgo_handle
+      assert user.name == valid_attrs.name
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -37,14 +37,18 @@ defmodule Bauble.AccountsTest do
 
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
-      update_attrs = %{active: false, location: "some updated location", mtga_handle: "some updated mtga_handle", mtgo_handle: "some updated mtgo_handle", name: "some updated name"}
+
+      update_attrs =
+        valid_attributes(%{
+          active: false
+        })
 
       assert {:ok, %User{} = user} = Accounts.update_user(user, update_attrs)
       assert user.active == false
-      assert user.location == "some updated location"
-      assert user.mtga_handle == "some updated mtga_handle"
-      assert user.mtgo_handle == "some updated mtgo_handle"
-      assert user.name == "some updated name"
+      assert user.location == update_attrs.location
+      assert user.mtga_handle == update_attrs.mtga_handle
+      assert user.mtgo_handle == update_attrs.mtgo_handle
+      assert user.name == update_attrs.name
     end
 
     test "update_user/2 with invalid data returns error changeset" do
@@ -90,7 +94,7 @@ defmodule Bauble.AccountsTest do
     end
 
     test "returns the user if the email and password are valid" do
-      %{id: id} = user = user_fixture()
+      %{id: id} = user = user_fixture(password: valid_user_password())
 
       assert %User{id: ^id} =
                Accounts.get_user_by_email_and_password(user.email, valid_user_password())
@@ -98,9 +102,9 @@ defmodule Bauble.AccountsTest do
   end
 
   describe "get_user!/1" do
-    test "raises if id is invalid" do
+    test "raises no results if id is not in database" do
       assert_raise Ecto.NoResultsError, fn ->
-        Accounts.get_user!(-1)
+        Accounts.get_user!("8d26b6b3-3cd0-433f-bd42-612d9bd77e1f")
       end
     end
 
@@ -148,7 +152,7 @@ defmodule Bauble.AccountsTest do
 
     test "registers users with a hashed password" do
       email = unique_user_email()
-      {:ok, user} = Accounts.register_user(valid_user_attributes(email: email))
+      {:ok, user} = Accounts.register_user(valid_attributes(email: email))
       assert user.email == email
       assert is_binary(user.hashed_password)
       assert is_nil(user.confirmed_at)
@@ -169,7 +173,7 @@ defmodule Bauble.AccountsTest do
       changeset =
         Accounts.change_user_registration(
           %User{},
-          valid_user_attributes(email: email, password: password)
+          valid_attributes(email: email, password: password)
         )
 
       assert changeset.valid?
@@ -188,7 +192,7 @@ defmodule Bauble.AccountsTest do
 
   describe "apply_user_email/3" do
     setup do
-      %{user: user_fixture()}
+      %{user: user_fixture(password: valid_user_password())}
     end
 
     test "requires email to change", %{user: user} do
@@ -230,7 +234,9 @@ defmodule Bauble.AccountsTest do
 
     test "applies the email without persisting it", %{user: user} do
       email = unique_user_email()
+
       {:ok, user} = Accounts.apply_user_email(user, valid_user_password(), %{email: email})
+
       assert user.email == email
       assert Accounts.get_user!(user.id).email != email
     end
@@ -318,7 +324,7 @@ defmodule Bauble.AccountsTest do
 
   describe "update_user_password/3" do
     setup do
-      %{user: user_fixture()}
+      %{user: user_fixture(password: valid_user_password())}
     end
 
     test "validates password", %{user: user} do
