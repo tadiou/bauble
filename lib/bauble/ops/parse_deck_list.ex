@@ -9,6 +9,9 @@ defmodule Ops.ParseDeckList do
   This is a newline delimited format, so that it's easy to copy and paste from
   the current existing formatters (Arena, MTGO, Goldfish, etc.)
 
+  This could handle Companions better as it's own individual type, but that
+  is probably more validation of the game rules engine than anything else.
+
   For sample formatted lists that would be parsed from the front end, see
   `test/bauble/ops/valid_deck_lists` and `test/bauble/ops/invalid_deck_lists`.
   """
@@ -31,7 +34,7 @@ defmodule Ops.ParseDeckList do
 
     {maindeck, sideboard} =
       newline_deliniated_deck_list
-      |> iterate_content
+      |> cleanup_deck_list
 
     try do
       {:ok, validate({maindeck, sideboard})}
@@ -41,12 +44,12 @@ defmodule Ops.ParseDeckList do
   end
 
   # Remove any preceding newlines so that we know the next newline should separate the maindeck
-  # from the sideboard. T
+  # from the sideboard.
   defp split_lines(string) do
     string |> String.split("\n") |> Enum.drop_while(&empty_line/1)
   end
 
-  defp iterate_content(ary) do
+  defp cleanup_deck_list(ary) do
     result =
       Enum.map(ary, fn line ->
         maybe_delete_line(line)
@@ -65,6 +68,7 @@ defmodule Ops.ParseDeckList do
     {maindeck |> format_cards, sideboard |> Enum.reject(&empty_line/1) |> format_cards}
   end
 
+  # Main validation pathway
   defp validate({maindeck, sideboard}) do
     maindeck_list = Enum.map(maindeck, &Tuple.to_list/1)
     sideboard_list = Enum.map(sideboard, &Tuple.to_list/1)
@@ -94,6 +98,15 @@ defmodule Ops.ParseDeckList do
     end
   end
 
+  # This is possible to use a `validate/3` to loop over here, but `map_reduce` felt a little cleaner
+  # We don't care about the result, but we do care about iterating through the total deck_list
+  # to determine if there's a quantity of more that 4
+  #
+  # There's exactly 5 cards that allow you to have more than 4 cards in a deck, Dragon's Approach,
+  # Persistent Petitioners, Rat Colony, Relentless Rats, Shadowborn Apostle. If I was going to
+  # handle that edge case, I'd probably handle that differently, but out of 50k-ish cards, and
+  # the fact that the demographic for the product wouldn't ever use them, I'm not gonna make a
+  # special case. If so, I'd just expand `is_basic_land`, into `allowed_more_than_4_of`.
   defp validate(deck_list, :total_list) do
     Enum.map_reduce(deck_list, %{}, fn [name, quantity], acc_list ->
       case Map.get(acc_list, name) do
@@ -118,18 +131,15 @@ defmodule Ops.ParseDeckList do
     end)
   end
 
-  defp validate([] = deck_list, :sideboard), do: deck_list
-
-  @doc """
-  Converts cards into a tuple list
-  """
-  def format_cards(deck_list) do
+  # Converts cards into a tuple list
+  defp format_cards(deck_list) do
     Enum.map(deck_list, fn line ->
       [quantity, name] = String.split(line, " ", parts: 2)
       {name, quantity |> String.to_integer()}
     end)
   end
 
+  # There's a few reasons to straight up delete a line so they don't add to the list
   defp maybe_delete_line(string) do
     cond do
       is_keyworded(string) ->
