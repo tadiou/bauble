@@ -78,7 +78,7 @@ defmodule Bauble.MixProject do
 
       # Sample Data & Factories
       {:assertions, "~> 0.18.1", only: :test},
-      {:ex_machina, "~> 2.7"},
+      # {:ex_machina, "~> 2.7"},
       {:faker, "~> 0.16"}
     ]
   end

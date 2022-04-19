@@ -2,7 +2,7 @@ defmodule Bauble.Decks.DeckType do
   use Bauble.Schema
   import Ecto.Changeset
 
-  schema "deck_type" do
+  schema "deck_types" do
     field :name, :string, null: false
     field :active, :boolean, default: true, null: false
     field :superceded_by_deck_type_id, :id

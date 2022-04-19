@@ -22,7 +22,7 @@ defmodule Bauble.DecksTest do
 
     test "create_deck_list/1 with valid data creates a deck_list" do
       valid_attrs = %{list: "some list", name: "some name", version: "some version"}
-
+      p
       assert {:ok, %DeckList{} = deck_list} = Decks.create_deck_list(valid_attrs)
       assert deck_list.list == "some list"
       assert deck_list.name == "some name"
@@ -35,7 +35,12 @@ defmodule Bauble.DecksTest do
 
     test "update_deck_list/2 with valid data updates the deck_list" do
       deck_list = deck_list_fixture()
-      update_attrs = %{list: "some updated list", name: "some updated name", version: "some updated version"}
+
+      update_attrs = %{
+        list: "some updated list",
+        name: "some updated name",
+        version: "some updated version"
+      }
 
       assert {:ok, %DeckList{} = deck_list} = Decks.update_deck_list(deck_list, update_attrs)
       assert deck_list.list == "some updated list"

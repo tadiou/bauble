@@ -21,10 +21,6 @@ defmodule BaubleWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    resources "/deck_types", DeckTypeController
-    resources "/deck_lists", DeckListController
-    resources "/matches", MatchController
-    resources "/users", UserController
   end
 
   # Other scopes may use custom stacks.
@@ -92,5 +88,12 @@ defmodule BaubleWeb.Router do
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :edit
     post "/users/confirm/:token", UserConfirmationController, :update
+  end
+
+  scope "/", BaubleWeb do
+    resources "/deck_types", DeckTypeController
+    resources "/deck_lists", DeckListController
+    resources "/matches", MatchController
+    resources "/users", UserController
   end
 end

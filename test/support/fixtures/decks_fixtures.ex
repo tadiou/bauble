@@ -9,15 +9,20 @@ defmodule Bauble.DecksFixtures do
   """
   def deck_list_fixture(attrs \\ %{}) do
     {:ok, deck_list} =
-      attrs
-      |> Enum.into(%{
-        list: "some list",
-        name: "some name",
-        version: "some version"
-      })
+      deck_list_valid_attributes(attrs)
       |> Bauble.Decks.create_deck_list()
 
     deck_list
+  end
+
+  def deck_list_valid_attributes(attrs \\ %{}) do
+    attrs
+    |> Enum.into(%{
+      list: "some list",
+      name: "some name",
+      version: "some version",
+      user_id: attrs[:user_id] || UUID.uuid4()
+    })
   end
 
   @doc """
@@ -27,7 +32,9 @@ defmodule Bauble.DecksFixtures do
     {:ok, deck_type} =
       attrs
       |> Enum.into(%{
-        name: "some name"
+        name: "some name",
+        active: true,
+        superceded_by_deck_type: nil
       })
       |> Bauble.Decks.create_deck_type()
 

@@ -1,11 +1,16 @@
 defmodule BaubleWeb.DeckListControllerTest do
   use BaubleWeb.ConnCase
 
-  import Bauble.DecksFixtures
+  alias Bauble.AccountsFixtures
+  alias Bauble.DecksFixtures
 
-  @create_attrs %{list: "some list", name: "some name", version: "some version"}
-  @update_attrs %{list: "some updated list", name: "some updated name", version: "some updated version"}
-  @invalid_attrs %{list: nil, name: nil, version: nil}
+  @create_attrs DecksFixtures.deck_list_valid_attributes()
+  @update_attrs %{
+    list: "some updated list",
+    name: "some updated name",
+    version: "some updated version"
+  }
+  @invalid_attrs %{list: nil, name: nil, version: nil, user_id: UUID.uuid4()}
 
   describe "index" do
     test "lists all deck_lists", %{conn: conn} do
@@ -78,7 +83,8 @@ defmodule BaubleWeb.DeckListControllerTest do
   end
 
   defp create_deck_list(_) do
-    deck_list = deck_list_fixture()
+    user = AccountsFixtures.user_fixture()
+    deck_list = DecksFixtures.deck_list_fixture(%{user_id: user.id})
     %{deck_list: deck_list}
   end
 end
